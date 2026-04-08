@@ -1,5 +1,6 @@
 package Basic;
 
+import com.github.javafaker.Faker;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
@@ -30,5 +31,34 @@ public class UserRegistration {
         int actualStatusCode = response.getStatusCode();
         assert actualStatusCode == 200 : "Status code should be 200";
         authToken = response.jsonPath().getString("data.token");
+    }
+
+    @Test(priority = 2)
+    public void registerUser() {
+        // Implement user registration test using authToken
+        String apiPath = "/APIDEV/register";
+        registeredEmail = Faker.instance().internet().emailAddress();
+        String payload = String.format("{\n" +
+                "  \"firstName\": \"John\",\n" +
+                "  \"lastName\": \"Doe\",\n" +
+                "  \"email\": \"%s\",\n" +
+                "  \"password\": \"@a12345678\",\n" +
+                "  \"confirmPassword\": \"@a12345678\",\n" +
+                "  \"phone\": \"\",\n" +
+                "  \"groupId\": \"1deae17a-c67a-4bb0-bdeb-df0fc9e2e526\"\n" +
+                "}", registeredEmail);
+
+        Response response = RestAssured.given()
+                .baseUri(baseURL)
+                .basePath(apiPath)
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + authToken)
+                .body(payload)
+                .log().all()
+                .post().prettyPeek();
+
+        int actualStatusCode = response.getStatusCode();
+        assert actualStatusCode == 201 : "Status code should be 201";
+        userId = response.jsonPath().getString("data.id");
     }
 }
