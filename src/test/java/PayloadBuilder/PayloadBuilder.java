@@ -29,4 +29,16 @@ public class PayloadBuilder {
 
         return approveUserRegistration;
     }
+
+    public static JSONObject makeUserAdminPayload(){
+        JSONObject makeAdmin = new JSONObject();
+        makeAdmin.put("role", "admin");
+        return makeAdmin;
+    }
+
+    public static JSONObject deleteUserPayload(){
+        JSONObject deleteUser = new JSONObject();
+        deleteUser.put("status", "deleted");
+        return deleteUser;
+    }
 }

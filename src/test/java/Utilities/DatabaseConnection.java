@@ -15,7 +15,7 @@ public class DatabaseConnection {
 
         try (Connection connection = java.sql.DriverManager.getConnection(dbURL, dbUsername, dbPassword)) {
             try (java.sql.Statement statement = connection.createStatement();
-                 java.sql.ResultSet resultSet = statement.executeQuery("SELECT * FROM loginUser WHERE id = 5")) {
+                 java.sql.ResultSet resultSet = statement.executeQuery("SELECT * FROM loginUser WHERE id = 7")) {
                 while (resultSet.next()) {
                     getEmail = resultSet.getString("email");
                     getPassword = resultSet.getString("password");

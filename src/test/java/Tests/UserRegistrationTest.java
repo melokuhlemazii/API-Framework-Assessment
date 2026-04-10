@@ -10,6 +10,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class UserRegistrationTest {
 
+    static String registeredUserId;
     static String registeredEmail;
 
     @BeforeClass
@@ -26,12 +27,14 @@ public class UserRegistrationTest {
                 .assertThat()
                 .statusCode(201)
                 .body("success", equalTo(true));
+
+       // registeredUserId = ApiRequestBuilder.getRegisteredUserId();
     }
 
     @Test(dependsOnMethods = "userRegistration")
     public void adminLoginTest() {
 
-        ApiRequestBuilder.loginUserResponse(DatabaseConnection.getEmail, DatabaseConnection.getPassword)
+        ApiRequestBuilder.adminLoginResponse(DatabaseConnection.getEmail, DatabaseConnection.getPassword)
                 .then()
                 .log().all()
                 .assertThat()
@@ -50,10 +53,51 @@ public class UserRegistrationTest {
                 .body("success", equalTo(true));
     }
 
-    @Test (dependsOnMethods = "approveUserRegistration")
+    @Test(dependsOnMethods = "approveUserRegistration")
+    public void makeUserAdminTest(){
+        ApiRequestBuilder.makeUserAdminResponse()
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true));
+    }
+
+    @Test (dependsOnMethods = "makeUserAdminTest")
     public void userLoginTest(){
 
         ApiRequestBuilder.loginUserResponse(registeredEmail, "Ntuthuko1031@")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true));
+    }
+
+
+    @Test(dependsOnMethods = "makeUserAdminTest")
+    public void verifyUserIsAdminTest(){
+        ApiRequestBuilder.verifyUserAdminResponse()
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("data.Role", equalTo("admin"));
+    }
+
+    @Test(dependsOnMethods = "verifyUserIsAdminTest")
+    public void reLoginAsAdminBeforeDelete(){
+        ApiRequestBuilder.adminLoginResponse(DatabaseConnection.getEmail, DatabaseConnection.getPassword)
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true));
+    }
+
+    @Test(dependsOnMethods = "reLoginAsAdminBeforeDelete")
+    public void deleteUserTest(){
+        ApiRequestBuilder.deleteUserResponse()
                 .then()
                 .log().all()
                 .assertThat()
