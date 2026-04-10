@@ -28,7 +28,7 @@ public class UserRegistrationTest {
                 .statusCode(201)
                 .body("success", equalTo(true));
 
-       // registeredUserId = ApiRequestBuilder.getRegisteredUserId();
+        // registeredUserId = ApiRequestBuilder.getRegisteredUserId();
     }
 
     @Test(dependsOnMethods = "userRegistration")
@@ -42,6 +42,7 @@ public class UserRegistrationTest {
                 .body("success", equalTo(true));
 
     }
+
 
     @Test (dependsOnMethods = "adminLoginTest")
     public void approveUserRegistration(){
