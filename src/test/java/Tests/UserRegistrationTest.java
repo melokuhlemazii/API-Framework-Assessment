@@ -43,7 +43,6 @@ public class UserRegistrationTest {
 
     }
 
-
     @Test (dependsOnMethods = "adminLoginTest")
     public void approveUserRegistration(){
         ApiRequestBuilder.approveUserRegistrationResponse()
