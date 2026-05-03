@@ -63,7 +63,7 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
             <version>5.5.1</version>
-            <scope>basic.UserRegistration</scope>
+            <scope>test</scope>
         </dependency>
 
         <!-- Source: https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
